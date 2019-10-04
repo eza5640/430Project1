@@ -20,15 +20,14 @@ const getLemons = (request, response) => {
 const getLemonsMeta = (request, response) => respondJSONMeta(request, response, 200);
 
 const addLemon = (request, response) => {
-  // if (lemons[newUser.name]) {
-  //   lemons[newUser.name] = newUser;
-  //   return respondJSON(request, response, 204, newUser);
-  // }
-  // lemons[newUser.name] = newUser;
+// if (lemons[newUser.name]) {
+//   lemons[newUser.name] = newUser;
+//   return respondJSON(request, response, 204, newUser);
+// }
+// lemons[newUser.name] = newUser;
 
-  // return respondJSON(request, response, 201, newUser);
+  respondJSON(request, response, 201, null);
 };
-
 const notFound = (request, response) => {
   const responseJSON = {
     message: 'The page you are looking for was not found.',
