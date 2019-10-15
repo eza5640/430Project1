@@ -24,7 +24,7 @@ const getImages = (request, response) => {
       console.log(err);
     }
     lemonImages.forEach(file => {
-      response.write(`<img src='${images}${file}'></img>`);
+      response.write(`<img src='${images}${file}' alt='${file.toString()}'></img>`);
     });
     response.end();
   });  
