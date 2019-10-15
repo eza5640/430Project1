@@ -4,11 +4,12 @@ const query = require('querystring');
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses');
 
-const port = process.env.PORT || process.env.NODE_PORT || 3001;
+const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCss,
+  '/getLemons': htmlHandler.getImages,
   '/addUser': jsonHandler.addUser,
   '/getUsers': jsonHandler.getUsers,
   '/getUsersMeta': jsonHandler.getUsersMeta,

@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const index = fs.readFileSync(`${__dirname}/../client/client.html`);
 const css = fs.readFileSync(`${__dirname}/../client/style.css`);
+const images = `${__dirname}/../client/images/`;
 
 const getIndex = (request, response) => {
   response.writeHead(200, { 'Content-Type': 'text/html' });
@@ -15,5 +16,20 @@ const getCss = (request, response) => {
   response.end();
 };
 
+const getImages = (request, response) => {
+  response.writeHead(200, { 'Content-Type': 'text/html'});
+  fs.readdir(images, (err, lemonImages) => {
+    if(err)
+    {
+      console.log(err.message);
+    }
+    lemonImages.forEach(file => {
+      response.write(`<image src='${images}${file}'>LEMON</image>`);
+    });
+    response.end();
+  });  
+}
+
 module.exports.getIndex = getIndex;
 module.exports.getCss = getCss;
+module.exports.getImages = getImages;
