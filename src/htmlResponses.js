@@ -17,7 +17,7 @@ const getCss = (request, response) => {
 };
 
 const getImages = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'image/jpeg'});
+  response.writeHead(200, { 'Content-Type': 'text/html'});
   fs.readdir(images, (err, lemonImages) => {
     if(err)
     {
