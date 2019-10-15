@@ -21,10 +21,10 @@ const getImages = (request, response) => {
   fs.readdir(images, (err, lemonImages) => {
     if(err)
     {
-      console.log(err.message);
+      console.log(err);
     }
     lemonImages.forEach(file => {
-      response.write(`<image src='${images}${file}'>LEMON</image>`);
+      response.write(`<img src='${images}${file}'></img>`);
     });
     response.end();
   });  
