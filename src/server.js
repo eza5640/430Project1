@@ -10,8 +10,7 @@ const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCss,
   '/getLemons': htmlHandler.getImages,
-  '/addUser': jsonHandler.addUser,
-  '/getUsers': jsonHandler.getUsers,
+  '/addLemon': jsonHandler.addLemon,
   '/getUsersMeta': jsonHandler.getUsersMeta,
   '/notFoundMeta': jsonHandler.notFoundMeta,
   notFound: jsonHandler.notFound,
@@ -19,8 +18,9 @@ const urlStruct = {
 
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
-  if (parsedUrl.pathname === '/addUser') {
+  if (parsedUrl.pathname === '/addLemon') {
     const params = query.parse(parsedUrl.query);
+    console.dir(params);
     urlStruct[parsedUrl.pathname](request, response, params);
   }
   if (urlStruct[parsedUrl.pathname]) {

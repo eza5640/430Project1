@@ -1,4 +1,5 @@
-const lemons = {};
+const global = require('./htmlResponses');
+const fs = require('fs');
 const respondJSON = (request, response, status, object) => {
   response.writeHead(status, { 'Content-Type': 'application/json' });
   response.write(JSON.stringify(object));
@@ -19,14 +20,19 @@ const getLemons = (request, response) => {
 
 const getLemonsMeta = (request, response) => respondJSONMeta(request, response, 200);
 
-const addLemon = (request, response) => {
+const addLemon = (request, response, params) => {
 // if (lemons[newUser.name]) {
 //   lemons[newUser.name] = newUser;
 //   return respondJSON(request, response, 204, newUser);
 // }
 // lemons[newUser.name] = newUser;
-
-  respondJSON(request, response, 201, null);
+  if(params && params.uID != "")
+  {
+    let numElements = Object.keys(global.jsonObj).length;
+    global.jsonObj[numElements] = global.gen64Asset(`${params.uID}`);
+  }
+  //global.jsonObj[numElements] = newObject;
+  respondJSON(request, response, 201, global.jsonObj);
 };
 const notFound = (request, response) => {
   const responseJSON = {

@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
+  <title>Lemonsest - share your wildest lemons</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
+    let fileForm = null;
     const handleResponse = (xhr, parseResponse) => {
       const content = document.querySelector('#content');
+      const memes = document.querySelector('#lemons');
+      memes.innerHTML = ``;
       switch(xhr.status) {
         case 200:
-          content.innerHTML = `<b>Success</b>`;
+          content.innerHTML = `<b>Here's some lemons:</b>`;
           break;
         case 201:
           content.innerHTML = '<b>Create</b>';
@@ -32,17 +35,20 @@
       if(parseResponse) {
         const obj = JSON.parse(xhr.response);
         console.dir(obj);
-        
-        content.innerHTML += `<p>${xhr.response}</p>`;
+        for(let i = 0; i < Object.keys(obj).length; i++)
+        {
+          memes.innerHTML += `<img src='data:image/jpeg;base64,${obj[i.toString()].toString()}' style="padding-left: 3%;padding-top: 3%;">`;
+        }
+        //content.innerHTML += `<p>${xhr.response}</p>`;
       } else { 
         content.innerHTML += '<p>Meta Data Recieved</p>';
       }
     };
 
     const requestUpdate = (e, userForm) => {
-      const url = userForm.querySelector('#urlField').value;
+      const url = userForm.action;
       const method = userForm.querySelector('#methodSelect').value;
-      
+      console.log("In requestupdate, going to url: " + url);
       const xhr = new XMLHttpRequest();
       xhr.open(method, url);
       xhr.setRequestHeader('Accept', 'application/json');
@@ -59,21 +65,26 @@
     };
 
     const requestAdd = (e, userForm) => {
-      let url = userForm.querySelector('#nameForm').action;
-      const method = userForm.querySelector('#nameForm').method;
-      url += '?name=' + userForm.querySelector('#nameField').value;
-      url += '&age=' + userForm.querySelector('#ageField').value;
+      const fd = new FormData();
+      fd.append(fileForm.files[0].name, fileForm.files[0]);
+      var location = window.location.href;
+      var directoryPath = location.substring(0, location.lastIndexOf("/")+1);
+      let url = '/client/images/' + fileForm.files[0].name;
+      console.dir(directoryPath);
+      //userForm.querySelector('#nameForm').action;
+      //url += `?uID=${fileForm.files[0].name}`;
       const xhr = new XMLHttpRequest();
-      xhr.open(method, url);
-      xhr.onload = () => handleResponse(xhr, false);
+      xhr.open("POST", url);
+      console.dir(fd);
+      xhr.send(fd);
+      xhr.open("GET", `/addLemon?uID=${fileForm.files[0].name}`);
       xhr.send();
-      e.preventDefault();
-      return false;
     }
 
     const init = () => {
       const userForm = document.querySelector('#userForm');
       const nameForm = document.querySelector('#nameForm');
+      fileForm = nameForm.querySelector('#lemonUploader');
       const getLemons = (e) => requestUpdate(e, userForm);
       const addUser = (e) => requestAdd(e, nameForm);
       userForm.addEventListener('submit', getLemons);
@@ -86,6 +97,7 @@
   <section id="top">
     <h3>Lemonsest</h3>
     <form id="nameForm" action="/addLemon" method="post">
+      Select a lemon:<input type="file" name="lemonFile" id="lemonUploader">
       <input type="submit" value="Add Lemon" />
     </form>
     <form id="userForm" action="/getLemons" method="get">
@@ -97,6 +109,8 @@
     </form>
   </section>
   <section id="content">
+  </section>
+  <section id="lemons">
   </section>
 </body>
 </html>
