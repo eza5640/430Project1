@@ -40,8 +40,8 @@ const getImages = (request, response) => {
       
     let data = JSON.stringify(jsonObj, null, 2);
 
-    fs.writeFile(`imageData.json`, data, (err) => {
-      if(err) throw err;
+    fs.writeFile(`imageData.json`, data, (errr) => {
+      if(errr) throw errr;
     });
     response.end();
   });
